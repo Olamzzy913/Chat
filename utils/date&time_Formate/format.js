@@ -108,3 +108,21 @@ export {
   formatDate,
   firestoreTimestampToDate,
 };
+
+// const combineObjects = (data) => {
+//     const initialObjects = data.slice(0, 2);
+//     const messageObjects = data.slice(2);
+
+//     const combinedResults = initialObjects.map((obj) => {
+//       const email = obj.email1;
+//       const combinedMessages = messageObjects.filter(
+//         (msgObj) => msgObj.from === email
+//       );
+//       return {
+//         ...obj,
+//         messages: combinedMessages,
+//       };
+//     });
+//     log;
+//     return combinedResults;
+//   };

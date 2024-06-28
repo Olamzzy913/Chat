@@ -243,34 +243,28 @@ export default function Messages() {
     }
   };
 
-  const combineObjects = (data) => {
-    const initialObjects = data.slice(0, 2);
-    const messageObjects = data.slice(2);
-
-    const combinedResults = initialObjects.map((obj) => {
-      const email = obj.email1;
-      const combinedMessages = messageObjects.filter(
-        (msgObj) => msgObj.from === email
-      );
-      return {
-        ...obj,
-        messages: combinedMessages,
-      };
-    });
-    log;
-    return combinedResults;
-  };
-
-  const markAsRead = async (chatId) => {
-    const messagesSnapshot = await db
-      .collection("conversations")
-      .doc(chatId)
-      .collection("messages")
-      .where("read", "==", false)
-      .get();
-    messagesSnapshot.forEach((doc) => {
-      doc.ref.update({ read: true });
-    });
+  const markAsRead = async (selectedUser) => {
+    const conversationId = getConversationId(
+      auth.currentUser.email,
+      selectedUser
+    );
+    const q = query(
+      collection(db, "conversations", conversationId, "messages").where(
+        "read",
+        "==",
+        false
+      ),
+      orderBy("timestamp", "asc")
+    );
+    console.log(q);
+    // const messagesSnapshot = await db .collection("conversations")
+    //   .doc(conversationId)
+    //   .collection("messages")
+    //   .where("read", "==", false)
+    //   .get();
+    // messagesSnapshot.forEach((doc) => {
+    //   doc.ref.update({ read: true });
+    // });
   };
 
   const openChat = (user) => {
