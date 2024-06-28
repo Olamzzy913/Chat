@@ -674,7 +674,7 @@ export default function Messages() {
                   <div className="ml-4">
                     <p className="capitalised font-bold">{selectedUser}</p>
                     <p className="">
-                      {isSelectedUserActive.state === "Offline"
+                      {isSelectedUserActive.state === "Online"
                         ? isSelectedUserActive.state
                         : "last seen " +
                           formatTimestamp(isSelectedUserActive.lastChanged)}
