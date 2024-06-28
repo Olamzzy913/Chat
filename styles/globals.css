@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(58, 57, 57, 0.493);
+  border-radius: 14px;
+  border: 3px solid var(--primary);
+}
+
+body {
+  margin: 0px;
+  font-family: Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-size: 0.875rem;
+}
+.page {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(247, 247, 248);
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 24.2px;
+  aspect-ratio: 1;
+  --c: no-repeat linear-gradient(#e8e7e7 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background-size: 15% 100%;
+  animation: l1 1s infinite linear;
+}
+
+@keyframes l1 {
+  0% {
+    background-size: 15% 100%, 15% 100%, 15% 100%;
+  }
+  33% {
+    background-size: 15% 10%, 15% 100%, 15% 100%;
+  }
+  50% {
+    background-size: 15% 100%, 15% 10%, 15% 100%;
+  }
+  66% {
+    background-size: 15% 100%, 15% 100%, 15% 10%;
+  }
+  100% {
+    background-size: 15% 100%, 15% 100%, 15% 100%;
+  }
+}
