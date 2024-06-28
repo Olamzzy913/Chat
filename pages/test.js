@@ -1,9 +1,9 @@
 // pages/index.js
-
+import CallPage from "@/components/call/call";
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to the User Presence App</h1>
+      <CallPage />
     </div>
   );
 };
