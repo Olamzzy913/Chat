@@ -103,8 +103,8 @@ export default function Messages() {
       );
 
       setMessage("");
-      cancelSelectedFile();
-      // deleteRecording();
+      setSelectedImage(null);
+      setFile(null);
       fetchUsers();
     }
   };
@@ -510,13 +510,36 @@ export default function Messages() {
                             )}
                           {user.lastMessage.img &&
                             !user.lastMessage.audio &&
+                            !user.lastMessage.text && (
+                              <div className="flex items-center">
+                                <MdInsertPhoto className="text-[#181C1B] text-[1.2rem]" />
+                                <h1 className="text-md font-normal text-[1rem] ml-1">
+                                  Photo
+                                </h1>
+                              </div>
+                            )}
+                          {user.lastMessage.img &&
+                            !user.lastMessage.audio &&
                             user.lastMessage.text && (
                               <div className="flex items-center">
                                 <MdInsertPhoto className="text-[#181C1B] text-[1.2rem]" />
                                 <h1 className="text-md font-normal text-[1rem] ml-1">
-                                  {user.lastMessage.text
-                                    ? user.lastMessage.text
-                                    : Photo}
+                                  {user.lastMessage.text ? (
+                                    user.lastMessage.text.length > 25 ? (
+                                      <h1 className="text-md text-[1rem] font-normal ml-1">
+                                        {user.lastMessage.text.substring(
+                                          0,
+                                          25
+                                        ) + "..."}
+                                      </h1>
+                                    ) : (
+                                      <h1 className="text-md text-[1rem] font-normal ml-1">
+                                        {user.lastMessage.text}
+                                      </h1>
+                                    )
+                                  ) : (
+                                    "Photo"
+                                  )}
                                 </h1>
                               </div>
                             )}
@@ -539,11 +562,6 @@ export default function Messages() {
                           {displayUserTimeFormat(
                             firestoreTimestampToDate(user.lastMessage.timestamp)
                           )}
-                          {/* {formatTime(user.lastMessage.timestamp) === new Date()
-                        ? formatTime(user.lastMessage.timestamp)
-                        : formatDate(
-                            firestoreTimestampToDate(user.lastMessage.timestamp)
-                          )} */}
                         </h2>
                         {user.lastMessage.from !== auth.currentUser.email ? (
                           readMsg ? (
@@ -662,7 +680,7 @@ export default function Messages() {
                           <h2 className="mx-auto rounded-xl my-2 w-[6rem] text-[.65rem] text-center bg-white text-black p-1">
                             {formatDate(group.date)}
                           </h2>
-                          <div className="grid grid-cols-12">
+                          <div className="grid grid-cols-20">
                             {group.messages.map((msg) =>
                               msg.from !== currentUser ? (
                                 <div
@@ -680,36 +698,48 @@ export default function Messages() {
                                           </span>
                                         </div>
                                       )}
-                                      {!msg.audio &&
-                                        (msg.img || msg.text) &&
-                                        (msg.img || !msg.text) && (
-                                          <>
-                                            <img
-                                              className=" w-[24rem] h-[20rem] rounded-md object-cover"
-                                              src={msg.img}
-                                            />
-                                            <div
-                                              className="text-[1rem] py-[.8rem]  pr-[5.8rem]"
-                                              // className={
-                                              //   msg.img || !msg.text
-                                              //     ? "text-[1rem] pr-[5.8rem]"
-                                              //     : "text-[1rem] py-[.8rem]  pr-[5.8rem]"
-                                              // }
-                                            >
-                                              {msg.text}
-                                              <span
-                                                className={
-                                                  msg.img || !msg.text
-                                                    ? "text-black absolute bottom-[1rem] right-4 text-[.8rem] flex items-center float-end"
-                                                    : "text-white absolute bottom-[1rem] right-4 text-[.8rem] flex items-center float-end"
-                                                }
-                                              >
-                                                {formatTime(msg.timestamp)}
-                                                <BiCheckDouble className="text-[1.5rem] font-light ml-[2px]" />
-                                              </span>
-                                            </div>
-                                          </>
-                                        )}
+                                      {!msg.audio && msg.img && !msg.text && (
+                                        <>
+                                          <img
+                                            className=" w-[24rem] h-[20rem] rounded-md object-cover"
+                                            src={msg.img}
+                                          />
+                                          <div
+                                            className={
+                                              msg.img || !msg.text
+                                                ? "text-[1rem] pr-[5.8rem] w-[24rem]"
+                                                : "text-[1rem] py-[.8rem]  pr-[5.8rem] w-[24rem]"
+                                            }
+                                          >
+                                            {msg.text}
+                                            <span className="text-white absolute bottom-[.6rem] right-4 text-[.8rem] flex items-center float-end">
+                                              {formatTime(msg.timestamp)}
+                                              <BiCheckDouble className="text-[1.5rem] font-light ml-[2px]" />
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
+                                      {!msg.audio && msg.img && msg.text && (
+                                        <>
+                                          <img
+                                            className=" w-[24rem] h-[20rem] rounded-md object-cover"
+                                            src={msg.img}
+                                          />
+                                          <div
+                                            className={
+                                              msg.img || !msg.text
+                                                ? "text-[1rem] pr-[5.8rem] w-[24rem]"
+                                                : "text-[1rem] py-[.8rem]  pr-[5.8rem] w-[24rem]"
+                                            }
+                                          >
+                                            {msg.text}
+                                            <span className="text-black absolute bottom-[.6rem] right-4 text-[.8rem] flex items-center float-end">
+                                              {formatTime(msg.timestamp)}
+                                              <BiCheckDouble className="text-[1.5rem] font-light ml-[2px]" />
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
                                       {!msg.audio && !msg.img && msg.text && (
                                         <div className="text-[10px] pl-2 pr-[5.8rem]">
                                           {msg.text}
@@ -738,35 +768,48 @@ export default function Messages() {
                                           </span>
                                         </div>
                                       )}
-                                      {!msg.audio &&
-                                        (msg.img || msg.text) &&
-                                        (msg.img || !msg.text) && (
-                                          <>
-                                            <img
-                                              className="w-[24rem] h-[20rem] rounded-md object-cover"
-                                              src={msg.img}
-                                            />
-                                            <div
-                                              className={
-                                                msg.img || !msg.text
-                                                  ? "text-[1rem]  pr-[5.8rem]"
-                                                  : "text-[1rem] py-[.8rem]  pr-[5.8rem]"
-                                              }
-                                            >
-                                              {msg.text}
-                                              <span
-                                                className={
-                                                  msg.img || !msg.text
-                                                    ? "text-white absolute bottom-[1rem] right-4 text-[.8rem] flex items-center float-end"
-                                                    : "text-black absolute bottom-[1rem] right-4 text-[.8rem] flex items-center float-end"
-                                                }
-                                              >
-                                                {formatTime(msg.timestamp)}
-                                                <BiCheckDouble className="text-[1.5rem] font-light ml-[2px]" />
-                                              </span>
-                                            </div>
-                                          </>
-                                        )}
+                                      {!msg.audio && msg.img && !msg.text && (
+                                        <>
+                                          <img
+                                            className=" w-[24rem] h-[20rem] rounded-md object-cover"
+                                            src={msg.img}
+                                          />
+                                          <div
+                                            className={
+                                              msg.img || !msg.text
+                                                ? "text-[1rem] pr-[5.8rem] w-[24rem]"
+                                                : "text-[1rem] py-[.8rem]  pr-[5.8rem] w-[24rem]"
+                                            }
+                                          >
+                                            {msg.text}
+                                            <span className="text-white absolute bottom-[.6rem] right-4 text-[.8rem] flex items-center float-end">
+                                              {formatTime(msg.timestamp)}
+                                              <BiCheckDouble className="text-[1.5rem] font-light ml-[2px]" />
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
+                                      {!msg.audio && msg.img && msg.text && (
+                                        <>
+                                          <img
+                                            className=" w-[24rem] h-[20rem] rounded-md object-cover"
+                                            src={msg.img}
+                                          />
+                                          <div
+                                            className={
+                                              msg.img || !msg.text
+                                                ? "text-[1rem] pr-[5.8rem] w-[24rem]"
+                                                : "text-[1rem] py-[.8rem]  pr-[5.8rem] w-[24rem]"
+                                            }
+                                          >
+                                            {msg.text}
+                                            <span className="text-black absolute bottom-[.6rem] right-4 text-[.8rem] flex items-center float-end">
+                                              {formatTime(msg.timestamp)}
+                                              <BiCheckDouble className="text-[1.5rem] font-light ml-[2px]" />
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
                                       {!msg.audio && !msg.img && msg.text && (
                                         <div className="text-[1rem] pl-2 pr-[5.8rem]">
                                           {msg.text}
