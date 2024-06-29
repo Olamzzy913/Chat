@@ -407,7 +407,7 @@ export default function Messages() {
 
   return (
     <>
-      <div class="flex h-screen antialiased text-gray-800 md:hidden ">
+      <div class="flex h-svh antialiased text-gray-800 md:hidden ">
         {/* <div class="flex flex-row h-full w-full overflow-x-hidden relative"> */}
         {isMobile && (
           <div class="flex w-full flex-col py-1 px-2 w-[30%] bg-white flex-shrink-0 relative px-[1rem]">
