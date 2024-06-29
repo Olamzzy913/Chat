@@ -50,20 +50,20 @@ const ChatAudio = ({ url }) => {
   };
 
   return (
-    <div className="flex  items-center rounded-[20px] p-[10px] bg-[inherit] max-w-[400px]">
+    <div className="flex  items-center rounded-[20px] p-[1.2rem] bg-[inherit] max-w-[400px]">
       {isPlaying ? (
         <MdOutlinePause
           onClick={togglePlayPause}
-          className="mr-[10px] cursor-pointer text-[1.2rem] text-[#6F8171]"
+          className="mr-[10px] cursor-pointer text-[1.8rem] text-[#6F8171]"
         />
       ) : (
         <FaPlay
           onClick={togglePlayPause}
-          className="mr-[10px] cursor-pointer text-[#6F8171]"
+          className="mr-[10px] cursor-pointer text-[1.5rem] text-[#6F8171]"
         />
       )}
       {isPlaying ? (
-        <div className="flex gap-1 mx-1 h-[15px]">
+        <div className="flex gap-1 mx-[.8rem] h-[1.5rem]">
           <div class="loader"></div>
           <div class="loader"></div>
           <div class="loader"></div>
@@ -74,7 +74,7 @@ const ChatAudio = ({ url }) => {
         <div className="bg-[#6F8171]  h-[4px] rounded-xl w-[150px]"></div>
       )}
 
-      <div className="text-[#6F8171] text-[.7rem] ml-3">
+      <div className="text-[#6F8171] text-[1.2rem] ml-3">
         {formatTime(currentTime)}
       </div>
       <audio ref={audioRef} src={url} className="hidden"></audio>

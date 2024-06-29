@@ -7,6 +7,7 @@ import { FaRegCirclePause } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdAddCall, MdOutlineMic, MdDelete } from "react-icons/md";
 import { MdInsertPhoto, MdOutlineCancel } from "react-icons/md";
+import { FaArrowLeft } from "react-icons/fa";
 import { BiCheckDouble } from "react-icons/bi";
 import { IoAdd, IoCameraOutline, IoSearch } from "react-icons/io5";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -31,7 +32,6 @@ import {
   formatDate,
   firestoreTimestampToDate,
 } from "@/utils/date&time_Formate/format";
-import MobileView from "@/components/chat/MobileView";
 
 export default function Messages() {
   const [currentUser, setCurrentUser] = useState("");
@@ -58,6 +58,7 @@ export default function Messages() {
   const router = useRouter();
   const storage = getStorage();
   const [isSelectedUserActive, setIsSelectedUserActive] = useState([]);
+  const [isMobile, setIsMobile] = useState(true);
 
   const sendMessage = async () => {
     const user = auth.currentUser;
@@ -406,10 +407,10 @@ export default function Messages() {
 
   return (
     <>
-      <MobileView className="block md:hidden" />
-      <div class="md:flex hidden h-screen antialiased text-gray-800">
-        <div class="flex flex-row h-full w-full overflow-x-hidden relative">
-          <div class="flex  flex-col py-1 px-2 w-[30%] bg-white flex-shrink-0 relative">
+      <div class="flex h-screen antialiased text-gray-800 ">
+        {/* <div class="flex flex-row h-full w-full overflow-x-hidden relative"> */}
+        {isMobile && (
+          <div class="flex w-full flex-col py-1 px-2 w-[30%] bg-white flex-shrink-0 relative px-[1rem]">
             <RiChatNewFill
               onClick={() => {
                 setAddNewChat(!addNewChat);
@@ -481,6 +482,7 @@ export default function Messages() {
                     key={user.email}
                     onClick={() =>
                       setSelectedUser(user.email) ||
+                      setIsMobile(!isMobile) ||
                       fetchUserData(user.id) ||
                       cancelSelectedFile() ||
                       setMessage("") ||
@@ -567,6 +569,8 @@ export default function Messages() {
               </div>
             </div>
           </div>
+        )}
+        {!isMobile && (
           <div class="flex flex-col flex-auto h-full p-6">
             {file && (
               <>
@@ -604,36 +608,17 @@ export default function Messages() {
                 </div>
               </>
             )}
-            {!selectedUser && !file && (
-              <div class="flex flex-col items-center gap-2 justify-center flex-auto flex-shrink-0 rounded-2xl h-full ">
-                <h1 className="text-[1.5rem] mb-6">Select User to chat with</h1>
-                <div className="flex gap-2 justify-center">
-                  <img
-                    className="w-[40%] rounded-xl"
-                    src="https://media.istockphoto.com/id/1490133656/photo/young-woman-using-a-laptop-while-working-from-home.webp?b=1&s=170667a&w=0&k=20&c=KXB26GKytBWciFOW1Hef0p5mI8Sb1eesevwdAo3_EG8="
-                  />
-                  <img
-                    className="w-[40%] rounded-xl"
-                    src="https://media.istockphoto.com/id/1770666963/photo/portrait-of-handsome-caucasian-man-looking-at-laptop-working-online-from-his-home.webp?b=1&s=170667a&w=0&k=20&c=QYmjudsaVH-i-H0GkkeHH2WeJW-YP8KwSl9T4qh8rvs="
-                  />
-                </div>
-                <h1 className="font-bold text-[1rem]">
-                  Share ideas together. Get connected Get updated
-                </h1>
-                <button
-                  onClick={() => {
-                    setAddNewChat(!addNewChat);
-                  }}
-                  className="bg-green-600 p-3 text-white rounded-md hover:bg-green-800"
-                >
-                  Create Chat with new user
-                </button>
-              </div>
-            )}
+
             {selectedUser && !file && (
               <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-[#F2EDE7] h-full ">
                 <div className="bg-white p-4 flex items-center justify-between">
-                  <div className="flex ">
+                  <div className="flex items-center  ">
+                    <FaArrowLeft
+                      className="text-[1.2rem] mr-3"
+                      onClick={() => {
+                        setIsMobile(!isMobile);
+                      }}
+                    />
                     <div class="flex uppercase items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                       A
                     </div>
@@ -662,7 +647,7 @@ export default function Messages() {
                           <h2 className="mx-auto rounded-xl my-2 w-[6rem] text-[.65rem] text-center bg-white text-black p-1">
                             {formatDate(group.date)}
                           </h2>
-                          <div className="grid grid-cols-12">
+                          <div className="grid grid-cols-16">
                             {group.messages.map((msg) =>
                               msg.from !== currentUser ? (
                                 <div
@@ -856,7 +841,7 @@ export default function Messages() {
                     ) : (
                       <MdOutlineMic
                         onClick={startRecording}
-                        className="text-white bg-[#13C730] text-[2.8rem] w-[3.2rem] py-[.8rem] rounded-full cursor-pointer"
+                        className="text-white bg-[#13C730] text-[2.8rem] w-[3.8rem] py-[.8rem] rounded-full cursor-pointer"
                       />
                     )}
                   </div>
@@ -864,7 +849,7 @@ export default function Messages() {
               </div>
             )}
           </div>
-        </div>
+        )}
       </div>
     </>
   );
