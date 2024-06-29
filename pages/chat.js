@@ -406,7 +406,7 @@ export default function Messages() {
 
   return (
     <>
-      <MobileView className="block md:hidden" />
+      <MobileView />
       <div class="md:flex hidden h-screen antialiased text-gray-800">
         <div class="flex flex-row h-full w-full overflow-x-hidden relative">
           <div class="flex  flex-col py-1 px-2 w-[30%] bg-white flex-shrink-0 relative">
